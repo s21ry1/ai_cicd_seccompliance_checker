@@ -13,6 +13,7 @@ import json
 import time
 import datetime
 import subprocess
+import webbrowser
 from pathlib import Path
 from rich.console import Console
 from rich.panel import Panel
@@ -155,11 +156,38 @@ def generate_html_report(results, analysis_path, output_file):
         for result in results:
             result['file_type'] = determine_file_type(result['file'])
         
+        # Calculate severity counts
+        severity_counts = {
+            'critical': 0,
+            'high': 0,
+            'medium': 0,
+            'low': 0
+        }
+        
+        # Count severities from Trivy results
+        for result in results:
+            if 'trivy_results' in result and result['trivy_results'] and 'Results' in result['trivy_results']:
+                for res in result['trivy_results']['Results']:
+                    # Count vulnerabilities
+                    if 'Vulnerabilities' in res and res['Vulnerabilities']:
+                        for vuln in res['Vulnerabilities']:
+                            severity = vuln.get('Severity', '').lower()
+                            if severity in severity_counts:
+                                severity_counts[severity] += 1
+                    
+                    # Count misconfigurations
+                    if 'Misconfigurations' in res and res['Misconfigurations']:
+                        for misconf in res['Misconfigurations']:
+                            severity = misconf.get('Severity', '').lower()
+                            if severity in severity_counts:
+                                severity_counts[severity] += 1
+        
         # Generate HTML
         html_content = template.render(
             results=results,
             analysis_path=analysis_path,
-            timestamp=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            timestamp=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+            severity_counts=severity_counts
         )
         
         # Write HTML to file
@@ -277,11 +305,14 @@ def main():
         console.print(f"[bold red]Error:[/bold red] Path {path} does not exist")
         return 1
     
-    # Check if Ollama is running
+    # Check if CodeLlama is available
+    console.print("[bold blue]Checking CodeLlama availability...[/bold blue]")
     if not check_ollama():
         return 1
+    console.print("[bold green]CodeLlama detected:[/bold green] Will perform AI-powered analysis.")
     
     # Check if Trivy is installed
+    console.print("[bold blue]Checking Trivy availability...[/bold blue]")
     trivy_available = check_trivy()
     
     # Offer to install Trivy if not available
@@ -421,6 +452,18 @@ def main():
     # Generate and save HTML report
     html_file = generate_html_report(results, path, output_file)
     console.print(f"[bold green]HTML report saved to:[/bold green] {html_file}")
+    
+    # Provide a clickable link to the HTML report
+    html_file_abs = os.path.abspath(html_file)
+    console.print(f"[bold blue]Click here to open HTML report:[/bold blue] file://{html_file_abs}")
+    
+    # Try to open the HTML report in the default browser
+    try:
+        webbrowser.open(f"file://{html_file_abs}")
+        console.print("[bold green]HTML report opened in your default browser[/bold green]")
+    except Exception as e:
+        console.print(f"[bold yellow]Could not open browser automatically: {e}[/bold yellow]")
+        console.print("Please open the HTML report manually using the link above.")
     
     # Summary
     console.print(f"\n[bold]Summary:[/bold]")

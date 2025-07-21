@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -6,38 +7,38 @@
     <title>Security Analysis Report</title>
     <style>
         body {
+            background-color: #1a1a1a;
+            color: #e4e4e4;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             line-height: 1.6;
-            color: #333;
             max-width: 1200px;
             margin: 0 auto;
             padding: 20px;
-            background-color: #f5f5f5;
         }
         .header {
-            background-color: #0066cc;
+            background-color: #2c3e50;
             color: white;
             padding: 20px;
             border-radius: 5px;
             margin-bottom: 20px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
         }
         .summary {
-            background-color: #fff;
+            background-color: #2d2d2d;
             padding: 20px;
             border-radius: 5px;
             margin-bottom: 20px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
         }
         .file-report {
-            background-color: #fff;
+            background-color: #2d2d2d;
             padding: 20px;
             border-radius: 5px;
             margin-bottom: 20px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
         }
         .file-header {
-            background-color: #f0f0f0;
+            background-color: #3a3a3a;
             padding: 10px;
             border-radius: 5px;
             margin-bottom: 10px;
@@ -52,41 +53,41 @@
         .analysis {
             white-space: pre-wrap;
             padding: 10px;
-            background-color: #f9f9f9;
+            background-color: #333333;
             border-radius: 5px;
-            border-left: 4px solid #0066cc;
+            border-left: 4px solid #3498db;
         }
         .footer {
             text-align: center;
             margin-top: 30px;
-            color: #666;
+            color: #888;
             font-size: 0.9em;
         }
         .severity-high {
-            color: #d73a49;
+            color: #ff5252;
             font-weight: bold;
         }
         .severity-medium {
-            color: #e36209;
+            color: #ffab40;
             font-weight: bold;
         }
         .severity-low {
-            color: #ffcc00;
+            color: #ffeb3b;
             font-weight: bold;
         }
         .severity-info {
-            color: #0366d6;
+            color: #64b5f6;
             font-weight: bold;
         }
         .issue-count {
-            background-color: #0066cc;
+            background-color: #3498db;
             color: white;
             border-radius: 50%;
             padding: 2px 8px;
             font-size: 0.8em;
         }
         code {
-            background-color: #f0f0f0;
+            background-color: #333333;
             padding: 2px 4px;
             border-radius: 3px;
             font-family: monospace;
@@ -94,34 +95,35 @@
         .trivy-results {
             margin-top: 20px;
             padding: 10px;
-            background-color: #f9f9f9;
+            background-color: #333333;
             border-radius: 5px;
         }
         .vuln-table, .misconfig-table {
             width: 100%;
             border-collapse: collapse;
             margin-bottom: 20px;
+            color: #e4e4e4;
         }
         .vuln-table th, .misconfig-table th {
-            background-color: #f0f0f0;
+            background-color: #3a3a3a;
             padding: 8px;
             text-align: left;
         }
         .vuln-table td, .misconfig-table td {
             padding: 8px;
-            border-bottom: 1px solid #ddd;
+            border-bottom: 1px solid #444;
         }
         .error {
-            color: #d73a49;
+            color: #ff5252;
             font-weight: bold;
         }
         .analysis-info {
-            background-color: #e8f4ff;
+            background-color: #2c3e50;
             padding: 10px;
             border-radius: 5px;
             margin-bottom: 15px;
             font-size: 0.9em;
-            border-left: 4px solid #0066cc;
+            border-left: 4px solid #3498db;
         }
         .analysis-methods {
             display: flex;
@@ -130,19 +132,93 @@
         }
         .method {
             flex: 1;
-            background-color: #f9f9f9;
+            background-color: #333333;
             padding: 15px;
             border-radius: 5px;
-            border-top: 3px solid #0066cc;
+            border-top: 3px solid #3498db;
         }
         .method h4 {
             margin-top: 0;
-            color: #0066cc;
+            color: #3498db;
         }
         .method ul {
             padding-left: 20px;
         }
+        .file-type {
+            background-color: #3498db;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 0.8em;
+        }
+        .findings-summary {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        .finding-box {
+            flex: 1;
+            padding: 10px;
+            border-radius: 5px;
+            text-align: center;
+        }
+        .finding-box.critical {
+            background-color: rgba(255, 82, 82, 0.2);
+            border: 1px solid #ff5252;
+        }
+        .finding-box.high {
+            background-color: rgba(255, 171, 64, 0.2);
+            border: 1px solid #ffab40;
+        }
+        .finding-box.medium {
+            background-color: rgba(255, 235, 59, 0.2);
+            border: 1px solid #ffeb3b;
+        }
+        .finding-box.low {
+            background-color: rgba(100, 181, 246, 0.2);
+            border: 1px solid #64b5f6;
+        }
+        .finding-count {
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+        .tabs {
+            display: flex;
+            margin-bottom: 15px;
+        }
+        .tab {
+            padding: 10px 15px;
+            cursor: pointer;
+            background-color: #333333;
+            border: none;
+            color: #e4e4e4;
+        }
+        .tab.active {
+            background-color: #3498db;
+            color: white;
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
     </style>
+    <script>
+        function switchTab(tabName, element) {
+            // Hide all tab contents
+            const tabContents = document.querySelectorAll('.tab-content');
+            tabContents.forEach(tab => tab.classList.remove('active'));
+            
+            // Deactivate all tabs
+            const tabs = document.querySelectorAll('.tab');
+            tabs.forEach(tab => tab.classList.remove('active'));
+            
+            // Activate selected tab and content
+            document.getElementById(tabName).classList.add('active');
+            element.classList.add('active');
+        }
+    </script>
 </head>
 <body>
     <div class="header">
@@ -155,29 +231,22 @@
         <p>Total files analyzed: {{ results|length }}</p>
         <p>Analysis path: {{ analysis_path }}</p>
         
-        <h3>Analysis Methods</h3>
-        <div class="analysis-methods">
-            <div class="method">
-                <h4>AI-powered Analysis</h4>
-                <p>Uses CodeLlama to analyze code semantics and context to identify:</p>
-                <ul>
-                    <li>Hardcoded secrets and credentials</li>
-                    <li>Insecure configurations</li>
-                    <li>Missing security controls</li>
-                    <li>Compliance violations</li>
-                    <li>Best practice issues</li>
-                </ul>
+        <div class="findings-summary">
+            <div class="finding-box critical">
+                <div class="finding-count">{{ severity_counts.critical }}</div>
+                <div>Critical</div>
             </div>
-            
-            <div class="method">
-                <h4>Trivy Scanning</h4>
-                <p>Uses pattern matching against security databases to identify:</p>
-                <ul>
-                    <li>Known vulnerabilities (CVEs) in dependencies</li>
-                    <li>Specific misconfigurations against security benchmarks</li>
-                    <li>Compliance with standard security rules</li>
-                    <li>Issues with specific IDs and severity ratings</li>
-                </ul>
+            <div class="finding-box high">
+                <div class="finding-count">{{ severity_counts.high }}</div>
+                <div>High</div>
+            </div>
+            <div class="finding-box medium">
+                <div class="finding-count">{{ severity_counts.medium }}</div>
+                <div>Medium</div>
+            </div>
+            <div class="finding-box low">
+                <div class="finding-count">{{ severity_counts.low }}</div>
+                <div>Low</div>
             </div>
         </div>
     </div>
@@ -189,67 +258,68 @@
             <span class="file-type">{{ result.file_type }}</span>
         </div>
         
-        <h3>AI Analysis</h3>
-        <div class="analysis-info">
-            <p><strong>AI-powered analysis checks for:</strong> Hardcoded secrets, insecure configurations, missing security controls, compliance violations, and best practice issues based on code semantics and context.</p>
+        <div class="tabs">
+            <button class="tab active" onclick="switchTab('ai-analysis-{{ loop.index }}', this)">AI Analysis</button>
+            <button class="tab" onclick="switchTab('trivy-results-{{ loop.index }}', this)">Trivy Results</button>
         </div>
-        <div class="analysis">{{ result.analysis }}</div>
         
-        {% if result.trivy_results %}
-        <h3>Trivy Scan Results</h3>
-        <div class="analysis-info">
-            <p><strong>Trivy scan checks for:</strong> Known vulnerabilities (CVEs) in dependencies, specific misconfigurations against security benchmarks, and compliance with standard security rules using pattern matching.</p>
+        <div id="ai-analysis-{{ loop.index }}" class="tab-content active">
+            <div class="analysis">{{ result.analysis }}</div>
         </div>
-        <div class="trivy-results">
-            {% if result.trivy_results.error %}
-                <p class="error">Error running Trivy: {{ result.trivy_results.error }}</p>
-            {% elif result.trivy_results.Results %}
-                {% for res in result.trivy_results.Results %}
-                    {% if res.Vulnerabilities %}
-                        <h4>Vulnerabilities</h4>
-                        <table class="vuln-table">
-                            <tr>
-                                <th>ID</th>
-                                <th>Severity</th>
-                                <th>Package</th>
-                                <th>Description</th>
-                            </tr>
-                            {% for vuln in res.Vulnerabilities %}
-                            <tr class="severity-{{ vuln.Severity|lower }}">
-                                <td>{{ vuln.VulnerabilityID }}</td>
-                                <td>{{ vuln.Severity }}</td>
-                                <td>{{ vuln.PkgName }}</td>
-                                <td>{{ vuln.Description }}</td>
-                            </tr>
-                            {% endfor %}
-                        </table>
-                    {% endif %}
-                    
-                    {% if res.Misconfigurations %}
-                        <h4>Misconfigurations</h4>
-                        <table class="misconfig-table">
-                            <tr>
-                                <th>ID</th>
-                                <th>Severity</th>
-                                <th>Type</th>
-                                <th>Description</th>
-                            </tr>
-                            {% for misconf in res.Misconfigurations %}
-                            <tr class="severity-{{ misconf.Severity|lower }}">
-                                <td>{{ misconf.ID }}</td>
-                                <td>{{ misconf.Severity }}</td>
-                                <td>{{ misconf.Type }}</td>
-                                <td>{{ misconf.Description }}</td>
-                            </tr>
-                            {% endfor %}
-                        </table>
-                    {% endif %}
-                {% endfor %}
+        
+        <div id="trivy-results-{{ loop.index }}" class="tab-content">
+            {% if result.trivy_results %}
+                {% if result.trivy_results.error %}
+                    <p class="error">Error running Trivy: {{ result.trivy_results.error }}</p>
+                {% elif result.trivy_results.Results %}
+                    {% for res in result.trivy_results.Results %}
+                        {% if res.Vulnerabilities %}
+                            <h4>Vulnerabilities</h4>
+                            <table class="vuln-table">
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Severity</th>
+                                    <th>Package</th>
+                                    <th>Description</th>
+                                </tr>
+                                {% for vuln in res.Vulnerabilities %}
+                                <tr class="severity-{{ vuln.Severity|lower }}">
+                                    <td>{{ vuln.VulnerabilityID }}</td>
+                                    <td>{{ vuln.Severity }}</td>
+                                    <td>{{ vuln.PkgName }}</td>
+                                    <td>{{ vuln.Description }}</td>
+                                </tr>
+                                {% endfor %}
+                            </table>
+                        {% endif %}
+                        
+                        {% if res.Misconfigurations %}
+                            <h4>Misconfigurations</h4>
+                            <table class="misconfig-table">
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Severity</th>
+                                    <th>Type</th>
+                                    <th>Description</th>
+                                </tr>
+                                {% for misconf in res.Misconfigurations %}
+                                <tr class="severity-{{ misconf.Severity|lower }}">
+                                    <td>{{ misconf.ID }}</td>
+                                    <td>{{ misconf.Severity }}</td>
+                                    <td>{{ misconf.Type }}</td>
+                                    <td>{{ misconf.Description }}</td>
+                                </tr>
+                                {% endfor %}
+                            </table>
+                        {% endif %}
+                    {% endfor %}
+                {% else %}
+                    <p>No vulnerabilities or misconfigurations found by Trivy.</p>
+                {% endif %}
             {% else %}
-                <p>No vulnerabilities or misconfigurations found by Trivy.</p>
+                <p>Trivy scan was not performed. Install Trivy for vulnerability and misconfiguration scanning.</p>
             {% endif %}
         </div>
-        {% endif %}
     </div>
     {% endfor %}
 

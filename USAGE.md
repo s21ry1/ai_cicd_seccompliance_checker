@@ -31,7 +31,7 @@ Before installing the tool, ensure you have:
 1. **Clone the repository**
 
    ```bash
-   git clone https://github.com/yourusername/ai_cicd_seccompliance_checker.git
+   git clone https://github.com/s21ry1/ai_cicd_seccompliance_checker.git
    cd ai_cicd_seccompliance_checker
    ```
 
