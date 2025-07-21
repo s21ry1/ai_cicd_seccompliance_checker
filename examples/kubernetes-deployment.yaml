@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-app
+  namespace: default
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: my-app
+  template:
+    metadata:
+      labels:
+        app: my-app
+    spec:
+      containers:
+      - name: my-app
+        image: myregistry.com/myapp:latest
+        ports:
+        - containerPort: 8000
+        securityContext:
+          privileged: true
+        env:
+        - name: DATABASE_URL
+          value: "postgres://user:password@db:5432/mydb"
+        - name: API_KEY
+          value: "sk-1234567890abcdef"
+      imagePullSecrets:
+      - name: registry-credentials
