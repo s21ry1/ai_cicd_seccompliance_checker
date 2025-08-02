@@ -1,4 +1,4 @@
-# AI-Powered CI/CD Security Compliance Checker
+# AI-Powered CI/CD Security Compliance Checker 
 
 ![Security](https://img.shields.io/badge/Security-Scanning-blue)
 ![Python](https://img.shields.io/badge/Python-3.8+-green)
@@ -6,7 +6,7 @@
 
 A comprehensive security scanning tool that analyzes DevOps files for vulnerabilities, misconfigurations, and compliance issues using a dual-scanning approach: AI-powered analysis with CodeLlama and vulnerability detection with Trivy.
 
-## 🔍 Features
+## 🔍 Features and scope
 
 - **Dual-scanning technology**: AI analysis + vulnerability scanning
 - **Comprehensive coverage**: Dockerfiles, CI/CD pipelines, Kubernetes manifests, Terraform, and more
